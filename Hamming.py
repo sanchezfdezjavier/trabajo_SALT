@@ -1,0 +1,112 @@
+import random
+import copy
+
+def generar_mensaje(k): 
+    # Dev. un mensaje de datos (0s y 1s) de la longitud máxima que se puede
+    # autocorregir con k bits de paridad:  
+    # Ejemplo: si k = 3, long = 4 (7, incluyendo los bits de paridad, 8
+    # incluyendo la situación de no error)
+                                                              
+    longitud_mensaje = 2**k - 1 - k
+    mensaje = []
+    for _ in range(longitud_mensaje):
+        bit_aleatorio = random.choice([0, 1])
+        mensaje.append(bit_aleatorio)
+    return mensaje
+
+def cifra_binaria(n, k):
+    # Dev. la cifra k-ésima de un número n considerando su expresión binaria
+    # Considerando n como un número binario, la cifra 0 es la de las unidades,
+    # la 1, las decenas, etc. Por ejemplo, si n = 23 = "10111" (en binario):
+    # cifra_binaria(23,0) -> 1
+    # cifra_binaria(23,1) -> 1
+    # cifra_binaria(23,2) -> 1
+    # cifra_binaria(23,3) -> 0
+    # cifra_binaria(23,4) -> 1
+
+    for _ in range(k):
+        n = n // 2
+    return n % 2
+    
+def insertar_bits_de_paridad(mensaje, k):
+    # Insertamos 0s en las posiciones (2**0, 2**1, ...) de los bits de paridad:
+    for i in range(k):
+        mensaje.insert(2**i - 1, 0)
+        
+    # Calculamos el valor real de los k bits de paridad: 
+    for i in range(k): 
+        # Calculamos el bit de paridad i-ésimo:
+        suma_de_bits = 0
+        for j in range(len(mensaje)):
+            suma_de_bits += cifra_binaria(j+1, i) * mensaje[j] 
+        mensaje[2**i-1] = suma_de_bits % 2
+ 
+def alterar_lista_de_bits(lista, p):
+    for i in range(len(lista)):
+        alterar = random.random() < p 
+        if alterar:
+            lista[i] = 1 - lista[i]
+
+def bits_de_paridad_alterados(mensaje, k):
+    bits_de_paridad = [0] * k
+    for i in range(k):
+        for j in range(len(mensaje)):
+            bits_de_paridad[i] = (cifra_binaria(j+1, i) * mensaje[j] + bits_de_paridad[i]) % 2
+    return bits_de_paridad
+
+def posicion_del_error(bits_alterados):
+    posicion = 0
+    long = len(bits_alterados)
+    for i in range(long):
+        posicion += bits_alterados[long-i-1]*(2**(i))
+    return posicion
+
+def corregir_bit_erroneo(mensaje, posicion_error):
+    if posicion_error != 0:
+        mensaje[posicion_error - 1] = 1 - mensaje[posicion_error - 1]
+
+def son_listas_iguales(lista_a, lista_b):
+    if len(lista_a) != len(lista_b):
+        return False
+    for i in range(len(lista_a)):
+        if lista_a[i] != lista_b[i]:
+            return False
+    return True
+
+def Hamming(k, p):
+    N = 10**3
+    contador_mensajes_alterados = 0
+    contador_mensajes_alterados_y_corregidos_bien = 0
+
+    for _ in range(N):
+        # Generar el mensaje que se emite:
+        mensaje_original = generar_mensaje(k)
+        insertar_bits_de_paridad(mensaje_original, k)
+
+        mensaje_emitido = copy.deepcopy(mensaje_original)
+        alterar_lista_de_bits(mensaje_emitido, p)
+
+        bits_alterados = bits_de_paridad_alterados(mensaje_emitido, k)
+        posicion_error = posicion_del_error(bits_alterados)
+        
+        if mensaje_emitido != mensaje_original:
+            contador_mensajes_alterados += 1
+            # Corregir el mensaje:
+            corregir_bit_erroneo(mensaje_emitido, posicion_error)
+            if mensaje_emitido == mensaje_original:
+                contador_mensajes_alterados_y_corregidos_bien += 1
+    contador_mensajes_alterados_y_corregidos_mal = contador_mensajes_alterados - contador_mensajes_alterados_y_corregidos_bien     
+    return contador_mensajes_alterados/N, contador_mensajes_alterados_y_corregidos_bien/N, contador_mensajes_alterados_y_corregidos_mal/N
+
+def simulacion_antigua():
+    print('                                       %               %               %')
+    print('                                mensajes        mensajes        mensajes')
+    print('                                alterado        alterado        alterado')
+    print('   n + k               p                     y corregido  y no corregido')
+    print(' --------         ------       ---------    ------------  --------------')
+    for k in [3, 4, 5]:
+        n = 2**k - 1 - k
+        for p in [0.1, 0.01, 0.001]:
+            (p_alterado, p_alterado_y_corregido, p_alterado_y_no_corregido) = Hamming(k, p)
+            print (repr(n).rjust(4) + " + " + repr(k), "{:15.4f}".format(float(p)),  "{:15.4f}".format(float(p_alterado)),  "{:15.4f}".format(float(p_alterado_y_corregido)),  "{:15.4f}".format(float(p_alterado_y_no_corregido)))
+    
