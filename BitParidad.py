@@ -7,6 +7,7 @@ Segundo programa de la simulación en SALT, teoría de la información
 """
 import random
 import copy
+import matplotlib.pyplot as plt
 
 def generar_lista_de_bits(n): 
     lista = []
@@ -48,7 +49,8 @@ def probabilidad_empirica_error_detectado(n, p):
         contador_mensajes_alterados_y_no_detectados = contador_mensajes_alterados-cont_mensajes_alterados_y_detectados     
     return contador_mensajes_alterados/N, cont_mensajes_alterados_y_detectados/N, contador_mensajes_alterados_y_no_detectados/N
 
-def simulacion():
+def simulacion_original():
+
     print('                                       %               %               %')
     print('                                mensajes        mensajes        mensajes')
     print('                                alterado        alterado        alterado')
@@ -58,3 +60,17 @@ def simulacion():
         for p in [0.1, 0.01, 0.001]:
             (p_alterado, p_alterado_y_detectado, p_alterado_y_no_detectado) = probabilidad_empirica_error_detectado(n, p)
             print (repr(n).rjust(4) + " + 1" , "{:15.4f}".format(float(p)),  "{:15.4f}".format(float(p_alterado)),  "{:15.4f}".format(float(p_alterado_y_detectado)),  "{:15.4f}".format(float(p_alterado_y_no_detectado)))
+
+def simulacion():
+   pass
+
+#Genera tantas listas como distacia entre los parametros
+#La longitud de cada lista se correspondera con el valor del intervalo en el que se encuentre
+def generate_random_lists(begin, finish):
+    bit_lists = []
+    for i in range(begin, finish +1):
+        bit_lists.append(generar_lista_de_bits(i))
+    return bit_lists
+
+
+
