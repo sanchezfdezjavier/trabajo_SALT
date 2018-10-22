@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Segundo programa de la simulación en SALT, teoría de la información
-@author Fernando 
+Segundo programa de la simulación de SALT, teoría de la información
+@author Fernando Pareja Mayo
+@author Javier Sánchez Fernández 
 
 
 """
@@ -71,11 +72,12 @@ def simulacion():
 #Javi
 #Genera tantas listas como distacia entre los parametros
 #La longitud de cada lista se correspondera con el valor del intervalo en el que se encuentre
-#El parametro n es el numero de listas de una misma longituda que se quieren hacer
+#El parametro n es el numero de listas de una misma longitud que se quieren hacer
+#Devuelve una tupla --> (listas, probabilidad empleada)
 def generate_random_lists(begin, finish, n):
     bit_lists = []
     for i in range(begin, finish +1):
-        for j in range(0,n+1):
+        for j in range(0,n):
             bit_lists.append(generar_lista_de_bits(i))
     return bit_lists, n
 
@@ -85,4 +87,18 @@ def add_parity_bit_to_lists(lists):
     for list in lists:
         annadir_bit_paridad(list)
 
+def alter_messages(messages_list, probability):
+    for message in messages_list:
+        alterar_lista_de_bits(message, probability)
+
+#Borrar
+
+#Creo los mensajes
+test_lists = generate_random_lists(3, 6, 2) #--> (listas..., probabilidad)
+add_parity_bit_to_lists(test_lists[0]) # Modifica las listas y les añade un bit de paridad
+aux_list = test_lists[0]
+alter_messages(aux_list, 1)
+
+print(aux_list)
+print(test_lists[0])
 
