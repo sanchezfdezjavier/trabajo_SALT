@@ -18,9 +18,18 @@ class Bit_paridad_javi():
         self.probabilities = ()
         self.probabilities = self.calculate_probabilities()
 
+    def get_start(self):
+
+        return self.start
+
+    def get_finish(self):
+
+        return self.finish
+
+    #Corregir
     def get_total_messages(self):
 
-        return len(range(self.start, self.finish +1)) * self.n
+        return len(range(self.start, self.finish +1)) * self.n, "mal"
 
     def get_messages_raw(self):
 
@@ -54,7 +63,8 @@ class Bit_paridad_javi():
     def generate_messages_from_to(self):
 
         messages_rep = []
-        for i in range(self.start, self.finish +1):
+        #Cambiar variable de control
+        for i in range(self.start, self.finish +1, (len(range(self.start, self.finish +1)) * self.n) // 2):
             for j in range(0, self.n):
                 messages_rep.append(self.generate_bit_message(i))
         return messages_rep
@@ -62,7 +72,7 @@ class Bit_paridad_javi():
     def add_parity_bit_to_messages(self):
 
         aux_messages_parity = copy.deepcopy(self.messages_raw)
-        #aux_messags_parity = self.messages_raw --> Actualizaba el atributo todo el rato.
+        #aux_messags_parity = self.messages_raw --> Actualizaba el atributo todo el rato
         for i in range(len(self.messages_raw)):
             parity_bit = sum(self.messages_raw[i])%2
             aux_messages_parity[i].append(parity_bit)
@@ -97,9 +107,16 @@ class Bit_paridad_javi():
 
         return altered_messages_counter, altered_and_detected_messages_counter, altered_and_no_detected_messages_counter
 
+    def calculate_separate_probabilities(self):
+        pass
+
+    def plot_results(self):
+        pass
+
+
 
 #Testing
-bitp = Bit_paridad_javi(10,1000,50, 0.5)
+bitp = Bit_paridad_javi(2,10,3,0.8)
 print("\n")
 print("Mensajes originales")
 print(bitp.get_messages_raw())
@@ -114,5 +131,6 @@ print("Mensajes totales generados {}".format(bitp.get_total_messages()))
 print("Mensajes alterados: {}".format(bitp.get_probabilities()[0]))
 print("Mensajes alterados y detectaados {}".format(bitp.get_probabilities()[1]))
 print("Mensajes alterados y  no detectados {}".format(bitp.get_probabilities()[2]))
+print(len(range(bitp.get_start(), bitp.get_finish() +1)))
 
 
