@@ -20,6 +20,7 @@ class Bit_paridad_javi():
         self.probabilities = ()
         self.probabilities = self.calculate_probabilities()
 
+    #Getters
     def get_n(self):
 
         return self.n
@@ -32,10 +33,9 @@ class Bit_paridad_javi():
 
         return self.finish
 
-    #Corregir
     def get_total_messages(self):
 
-        return len(range(self.start, self.finish +1)) * self.n, "mal"
+        return len(self.messages_parity_alterated)
 
     def get_messages_raw(self):
 
@@ -58,6 +58,8 @@ class Bit_paridad_javi():
         print("Generamos ", self.n, " mensajes de cada longitud.")
         print("Los cuales van de ", self.start, " hasta ", self.finish)
 
+
+    #Generates random message with a specified length
     def generate_bit_message(self, l):
 
         list = []
@@ -66,6 +68,7 @@ class Bit_paridad_javi():
             list.append(random_bit)
         return list
 
+    #Generates messages groups. Each group has 'n' messages with a linear spaced length based on start and finish
     def generate_messages_from_to(self):
 
         messages_rep = []
@@ -76,6 +79,7 @@ class Bit_paridad_javi():
                 messages_rep.append(self.generate_bit_message(i))
         return messages_rep
 
+    #Adds the parity biy at the end of the message
     def add_parity_bit_to_messages(self):
 
         aux_messages_parity = copy.deepcopy(self.messages_raw)
@@ -85,6 +89,7 @@ class Bit_paridad_javi():
             aux_messages_parity[i].append(parity_bit)
         return aux_messages_parity
 
+    #Modifies messages bits using the p given by the user
     def alterate_messages(self):
 
         aux_messages_parity_alterated = copy.deepcopy(self.messages_parity)
@@ -97,7 +102,8 @@ class Bit_paridad_javi():
 
         return aux_messages_parity_alterated
 
-    def calculate_probabilities(self):
+    #Calculate the statistics for the whole group of messages
+    def calculate_statistics(self):
 
         altered_messages_counter = 0
         altered_and_detected_messages_counter = 0
@@ -113,7 +119,8 @@ class Bit_paridad_javi():
 
         return altered_messages_counter, altered_and_detected_messages_counter, altered_and_no_detected_messages_counter
 
-    def calculate_separate_probabilities(self):
+    #Calculates the statistics for each group of messages
+    def calculate_separate_statistics(self):
 
         altered_messages_counter = 0
         altered_and_detected_messages_counter = 0
@@ -142,7 +149,7 @@ class Bit_paridad_javi():
 
         return return_list
 
-
+    #Testing graphs
     def test_plot_results(self):
         n_groups = 10
         means_frank = (90, 55, 40, 65, 90, 55, 40, 65, 10, 67)
