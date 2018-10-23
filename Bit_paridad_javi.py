@@ -149,11 +149,34 @@ class Bit_paridad_javi():
 
         return return_list
 
+    #Testing
+    def midle_test(self):
+        bitp = Bit_paridad_javi(10, 10000, 5, 0.001)
+        print("\n")
+        print("Mensajes originales")
+        # print(bitp.get_messages_raw())
+        print("\n")
+        print("Mensajes con bit de paridad añadido")
+        # print(bitp.get_messages_parity())
+        print("\n")
+        print("Mensajes alterados")
+        # print(bitp.get_messages_parity_alterated())
+        print("\n")
+        print("Numero de mensajes alterados {}".format(len(bitp.get_messages_parity_alterated())))
+        # print("Mensajes totales generados {}".format(bitp.get_total_messages()))
+        print("Mensajes alterados: {}".format(bitp.get_probabilities()[0]))
+        print("Mensajes alterados y detectaados {}".format(bitp.get_probabilities()[1]))
+        print("Mensajes alterados y  no detectados {}".format(bitp.get_probabilities()[2]))
+        # print( (len(range(bitp.get_start(), bitp.get_finish())) * bitp.get_n()) // 6)
+        print("Numero de mensajes generados {}".format(len(bitp.get_messages_parity_alterated())))
+        print(bitp.calculate_probabilities())
+        print(bitp.calculate_separate_probabilities())
+
     #Testing graphs
     def test_plot_results(self):
         n_groups = 10
-        means_frank = (90, 55, 40, 65, 90, 55, 40, 65, 10, 67)
-        means_guido = (85, 62, 54, 20, 90, 55, 40, 65, 20, 90)
+        scores1 = ()
+        scores2 = ()
 
         # create plot
         fig, ax = plt.subplots()
@@ -161,12 +184,12 @@ class Bit_paridad_javi():
         bar_width = 0.35
         opacity = 0.8
 
-        rects1 = plt.bar(index, means_frank, bar_width,
+        rects1 = plt.bar(index, scores1, bar_width,
                          alpha=opacity,
                          color='b',
                          label='alterados y no detectados')
 
-        rects2 = plt.bar(index + bar_width, means_guido, bar_width,
+        rects2 = plt.bar(index + bar_width, scores2, bar_width,
                          alpha=opacity,
                          color='r',
                          label='alterados y detectados')
@@ -181,28 +204,6 @@ class Bit_paridad_javi():
         plt.show()
 
 
-#Testing
-
-bitp = Bit_paridad_javi(10, 10000, 5,0.001)
-print("\n")
-print("Mensajes originales")
-#print(bitp.get_messages_raw())
-print("\n")
-print("Mensajes con bit de paridad añadido")
-#print(bitp.get_messages_parity())
-print("\n")
-print("Mensajes alterados")
-#print(bitp.get_messages_parity_alterated())
-print("\n")
-print("Numero de mensajes alterados {}".format(len(bitp.get_messages_parity_alterated())))
-#print("Mensajes totales generados {}".format(bitp.get_total_messages()))
-print("Mensajes alterados: {}".format(bitp.get_probabilities()[0]))
-print("Mensajes alterados y detectaados {}".format(bitp.get_probabilities()[1]))
-print("Mensajes alterados y  no detectados {}".format(bitp.get_probabilities()[2]))
-#print( (len(range(bitp.get_start(), bitp.get_finish())) * bitp.get_n()) // 6)
-print("Numero de mensajes generados {}".format(len(bitp.get_messages_parity_alterated())))
-print(bitp.calculate_probabilities())
-print(bitp.calculate_separate_probabilities())
 
 
 
