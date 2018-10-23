@@ -1,5 +1,7 @@
 import random as rnd
 import copy
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 class Bit_paridad_javi():
@@ -114,9 +116,35 @@ class Bit_paridad_javi():
     def calculate_separate_probabilities(self):
         pass
 
-    def plot_results(self):
-        pass
+    def test_plot_results(self):
+        n_groups = 10
+        means_frank = (90, 55, 40, 65, 90, 55, 40, 65, 10, 67)
+        means_guido = (85, 62, 54, 20, 90, 55, 40, 65, 20, 90)
 
+        # create plot
+        fig, ax = plt.subplots()
+        index = np.arange(n_groups)
+        bar_width = 0.35
+        opacity = 0.8
+
+        rects1 = plt.bar(index, means_frank, bar_width,
+                         alpha=opacity,
+                         color='b',
+                         label='alterados y no detectados')
+
+        rects2 = plt.bar(index + bar_width, means_guido, bar_width,
+                         alpha=opacity,
+                         color='r',
+                         label='alterados y detectados')
+
+        plt.xlabel('Person')
+        plt.ylabel('Scores')
+        plt.title('Resultados del método del bit de paridad')
+        plt.xticks(index + bar_width, ('A', 'B', 'C', 'D'))
+        plt.legend()
+
+        plt.tight_layout()
+        plt.show()
 
 
 #Testing
@@ -142,6 +170,8 @@ print("Numero de mensajes generados {}".format(len(bitp.get_messages_parity_alte
 
 for message in bitp.get_messages_parity_alterated():
     print(len(message))
+
+bitp.test_plot_results()
 
 
 
