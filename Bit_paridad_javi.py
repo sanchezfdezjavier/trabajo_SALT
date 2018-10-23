@@ -114,7 +114,34 @@ class Bit_paridad_javi():
         return altered_messages_counter, altered_and_detected_messages_counter, altered_and_no_detected_messages_counter
 
     def calculate_separate_probabilities(self):
-        pass
+
+        altered_messages_counter = 0
+        altered_and_detected_messages_counter = 0
+        altered_and_no_detected_messages_counter = 0
+        return_list = []
+        aux_list = [altered_messages_counter, altered_and_detected_messages_counter, altered_and_no_detected_messages_counter]
+
+        counter = 0
+        for i in range(len(self.messages_parity_alterated)):
+            if counter > 1:
+                return_list.append(aux_list)
+                altered_messages_counter = 0
+                altered_and_detected_messages_counter = 0
+                altered_and_no_detected_messages_counter = 0
+                aux_list = []
+                counter = 0
+            else:
+                received_message_satisfies_parity = sum(self.messages_parity_alterated[i]) % 2 == 0
+
+                if self.messages_parity[i] != self.messages_parity_alterated[i]:
+                    altered_messages_counter += 1
+                    if not received_message_satisfies_parity:
+                        altered_and_detected_messages_counter += 1
+                altered_and_no_detected_messages_counter = altered_messages_counter - altered_and_detected_messages_counter
+                counter += 1
+
+        return return_list
+
 
     def test_plot_results(self):
         n_groups = 10
@@ -137,10 +164,10 @@ class Bit_paridad_javi():
                          color='r',
                          label='alterados y detectados')
 
-        plt.xlabel('Person')
-        plt.ylabel('Scores')
+        plt.xlabel('Longitud del mensaje')
+        plt.ylabel('Mensajes')
         plt.title('Resultados del método del bit de paridad')
-        plt.xticks(index + bar_width, ('A', 'B', 'C', 'D'))
+        plt.xticks(index)
         plt.legend()
 
         plt.tight_layout()
@@ -149,16 +176,16 @@ class Bit_paridad_javi():
 
 #Testing
 # De 10 hasta 19(longitud de los mensajes) y generamos 2 de cada longitud con una probabilidad de alteracion de bit 0.8
-bitp = Bit_paridad_javi(10, 500, 2,0.8)
+bitp = Bit_paridad_javi(10, 500, 3,0.8)
 print("\n")
 print("Mensajes originales")
-print(bitp.get_messages_raw())
+#print(bitp.get_messages_raw())
 print("\n")
 print("Mensajes con bit de paridad añadido")
-print(bitp.get_messages_parity())
+#print(bitp.get_messages_parity())
 print("\n")
 print("Mensajes alterados")
-print(bitp.get_messages_parity_alterated())
+#print(bitp.get_messages_parity_alterated())
 print("\n")
 print("Numero de mensajes alterados {}".format(len(bitp.get_messages_parity_alterated())))
 #print("Mensajes totales generados {}".format(bitp.get_total_messages()))
@@ -171,8 +198,10 @@ print("Numero de mensajes generados {}".format(len(bitp.get_messages_parity_alte
 for message in bitp.get_messages_parity_alterated():
     print(len(message))
 
+print(bitp.calculate_probabilities())
 bitp.test_plot_results()
 
+print(bitp.calculate_separate_probabilities())
 
 
 
