@@ -18,6 +18,10 @@ class Bit_paridad_javi():
         self.probabilities = ()
         self.probabilities = self.calculate_probabilities()
 
+    def get_n(self):
+
+        return self.n
+
     def get_start(self):
 
         return self.start
@@ -64,7 +68,8 @@ class Bit_paridad_javi():
 
         messages_rep = []
         #Cambiar variable de control
-        for i in range(self.start, self.finish +1, (len(range(self.start, self.finish +1)) * self.n) // 2):
+        step = (len(range(self.start, self.finish)) * self.n ) // 20
+        for i in range(self.start, self.finish, step):
             for j in range(0, self.n):
                 messages_rep.append(self.generate_bit_message(i))
         return messages_rep
@@ -92,7 +97,6 @@ class Bit_paridad_javi():
 
     def calculate_probabilities(self):
 
-        N = 10**3
         altered_messages_counter = 0
         altered_and_detected_messages_counter = 0
 
@@ -116,7 +120,8 @@ class Bit_paridad_javi():
 
 
 #Testing
-bitp = Bit_paridad_javi(2,10,3,0.8)
+# De 10 hasta 19(longitud de los mensajes) y generamos 2 de cada longitud con una probabilidad de alteracion de bit 0.8
+bitp = Bit_paridad_javi(10, 500, 2,0.8)
 print("\n")
 print("Mensajes originales")
 print(bitp.get_messages_raw())
@@ -127,10 +132,17 @@ print("\n")
 print("Mensajes alterados")
 print(bitp.get_messages_parity_alterated())
 print("\n")
-print("Mensajes totales generados {}".format(bitp.get_total_messages()))
+print("Numero de mensajes alterados {}".format(len(bitp.get_messages_parity_alterated())))
+#print("Mensajes totales generados {}".format(bitp.get_total_messages()))
 print("Mensajes alterados: {}".format(bitp.get_probabilities()[0]))
 print("Mensajes alterados y detectaados {}".format(bitp.get_probabilities()[1]))
 print("Mensajes alterados y  no detectados {}".format(bitp.get_probabilities()[2]))
-print(len(range(bitp.get_start(), bitp.get_finish() +1)))
+#print( (len(range(bitp.get_start(), bitp.get_finish())) * bitp.get_n()) // 6)
+print("Numero de mensajes generados {}".format(len(bitp.get_messages_parity_alterated())))
+
+for message in bitp.get_messages_parity_alterated():
+    print(len(message))
+
+
 
 
