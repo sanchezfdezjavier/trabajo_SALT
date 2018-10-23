@@ -119,7 +119,6 @@ class Bit_paridad_javi():
         altered_and_detected_messages_counter = 0
         altered_and_no_detected_messages_counter = 0
         return_list = []
-        aux_list = [altered_messages_counter, altered_and_detected_messages_counter, altered_and_no_detected_messages_counter]
 
         counter = 0
         for i in range(len(self.messages_parity_alterated)):
@@ -138,6 +137,7 @@ class Bit_paridad_javi():
                     if not received_message_satisfies_parity:
                         altered_and_detected_messages_counter += 1
                 altered_and_no_detected_messages_counter = altered_messages_counter - altered_and_detected_messages_counter
+                aux_list = [altered_messages_counter, altered_and_detected_messages_counter, altered_and_no_detected_messages_counter]
                 counter += 1
 
         return return_list
@@ -175,8 +175,8 @@ class Bit_paridad_javi():
 
 
 #Testing
-# De 10 hasta 19(longitud de los mensajes) y generamos 2 de cada longitud con una probabilidad de alteracion de bit 0.8
-bitp = Bit_paridad_javi(10, 500, 3,0.8)
+
+bitp = Bit_paridad_javi(10, 10000, 5,0.001)
 print("\n")
 print("Mensajes originales")
 #print(bitp.get_messages_raw())
@@ -194,13 +194,7 @@ print("Mensajes alterados y detectaados {}".format(bitp.get_probabilities()[1]))
 print("Mensajes alterados y  no detectados {}".format(bitp.get_probabilities()[2]))
 #print( (len(range(bitp.get_start(), bitp.get_finish())) * bitp.get_n()) // 6)
 print("Numero de mensajes generados {}".format(len(bitp.get_messages_parity_alterated())))
-
-for message in bitp.get_messages_parity_alterated():
-    print(len(message))
-
 print(bitp.calculate_probabilities())
-bitp.test_plot_results()
-
 print(bitp.calculate_separate_probabilities())
 
 
