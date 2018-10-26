@@ -18,7 +18,7 @@ class Bit_paridad_javi():
         self.messages_parity_alterated = []
         self.messages_parity_alterated = self.alterate_messages()
         self.probabilities = ()
-        self.probabilities = self.calculate_probabilities()
+        self.probabilities = self.calculate_statistics()
 
     #Getters
     def get_n(self):
@@ -53,6 +53,30 @@ class Bit_paridad_javi():
 
         return self.probabilities
 
+    def get_length_group_messages(self):
+        aux_length = []
+
+        for message in self.messages_parity_alterated:
+            aux_length.append(len(message))
+
+        return aux_length
+    # To print the charts indexes.
+    def get_length_group_messages_simplified(self):
+
+        aux_length = []
+
+        for message in self.messages_parity_alterated:
+            aux_length.append(len(message))
+        set_length = set(aux_length)
+
+        return_list = []
+
+        for long in set_length:
+            return_list.append(long)
+
+        return_list.sort()
+        return return_list
+
     def toString(self):
 
         print("Generamos ", self.n, " mensajes de cada longitud.")
@@ -83,7 +107,6 @@ class Bit_paridad_javi():
     def add_parity_bit_to_messages(self):
 
         aux_messages_parity = copy.deepcopy(self.messages_raw)
-        #aux_messags_parity = self.messages_raw --> Actualizaba el atributo todo el rato
         for i in range(len(self.messages_raw)):
             parity_bit = sum(self.messages_raw[i])%2
             aux_messages_parity[i].append(parity_bit)
@@ -149,61 +172,19 @@ class Bit_paridad_javi():
 
         return return_list
 
-    #Testing
-    def midle_test(self):
-        bitp = Bit_paridad_javi(10, 10000, 5, 0.001)
-        print("\n")
-        print("Mensajes originales")
-        # print(bitp.get_messages_raw())
-        print("\n")
-        print("Mensajes con bit de paridad añadido")
-        # print(bitp.get_messages_parity())
-        print("\n")
-        print("Mensajes alterados")
-        # print(bitp.get_messages_parity_alterated())
-        print("\n")
-        print("Numero de mensajes alterados {}".format(len(bitp.get_messages_parity_alterated())))
-        # print("Mensajes totales generados {}".format(bitp.get_total_messages()))
-        print("Mensajes alterados: {}".format(bitp.get_probabilities()[0]))
-        print("Mensajes alterados y detectaados {}".format(bitp.get_probabilities()[1]))
-        print("Mensajes alterados y  no detectados {}".format(bitp.get_probabilities()[2]))
-        # print( (len(range(bitp.get_start(), bitp.get_finish())) * bitp.get_n()) // 6)
-        print("Numero de mensajes generados {}".format(len(bitp.get_messages_parity_alterated())))
-        print(bitp.calculate_probabilities())
-        print(bitp.calculate_separate_probabilities())
-
     #Testing graphs
-    def test_plot_results(self):
-        n_groups = 10
-        scores1 = ()
-        scores2 = ()
+    def plot_conclusions(self):
+        pass
 
-        # create plot
-        fig, ax = plt.subplots()
-        index = np.arange(n_groups)
-        bar_width = 0.35
-        opacity = 0.8
-
-        rects1 = plt.bar(index, scores1, bar_width,
-                         alpha=opacity,
-                         color='b',
-                         label='alterados y no detectados')
-
-        rects2 = plt.bar(index + bar_width, scores2, bar_width,
-                         alpha=opacity,
-                         color='r',
-                         label='alterados y detectados')
-
-        plt.xlabel('Longitud del mensaje')
-        plt.ylabel('Mensajes')
-        plt.title('Resultados del método del bit de paridad')
-        plt.xticks(index)
-        plt.legend()
-
-        plt.tight_layout()
-        plt.show()
-
-
-
-
+#Testing
+bitp = Bit_paridad_javi(20, 40, 5, 1)
+print("\n")
+print("Mensajes generados: {}".format(len(bitp.get_messages_parity_alterated())))
+print("1-> Las longitudes de los grupos de mensajes generados son:\n {}".format(bitp.get_length_group_messages()))
+print("\n\n")
+print("2-> Las longitudes(simplificadas) de los grupos de mensajes generados son:\n {}".format(bitp.get_length_group_messages_simplified()))
+print("\n\n")
+print("3--> Las probabilidades generales son: {}".format(bitp.get_probabilities()))
+print("\n\n")
+print("4--> Las probabilidades por cada grupo de longitud n son:\n {}".format(bitp.calculate_separate_statistics()))
 
