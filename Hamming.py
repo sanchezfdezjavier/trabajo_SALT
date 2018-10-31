@@ -172,16 +172,16 @@ def test_barchart():
                     label= 'alterado y no corregido')
 
     ax.set_xlabel('messages length')
-    ax.set_ylabel('messages number')
+    ax.set_ylabel('messages probs')
     ax.set_title('Hamming results')
     ax.set_xticks(index + bar_width / 2)
-    ax.set_xticklabels(get_parameters_plot()[0], fontsize = 3.5)
+    ax.set_xticklabels(get_parameters_plot()[0], fontsize = 5)
     ax.legend()
 
     fig.tight_layout()
     plt.show()
 
 
-simulacion(1)
+simulacion(10)
 test_barchart()
 print(get_parameters_plot())
