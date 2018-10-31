@@ -7,6 +7,7 @@ import numpy as np
 class Bit_paridad_javi():
 
     def __init__(self, start, finish, n, p):
+        self.step = 0
         self.start = start
         self.finish = finish
         self.n = n
@@ -18,7 +19,8 @@ class Bit_paridad_javi():
         self.messages_parity_alterated = []
         self.messages_parity_alterated = self.alterate_messages()
         self.probabilities = ()
-        self.probabilities = self.calculate_probabilities()
+        self.probabilities = self.calculate_statistics()
+        self.separate_statistics  = self.calculate_separate_statistics()
 
     #Getters
     def get_n(self):
@@ -53,6 +55,10 @@ class Bit_paridad_javi():
 
         return self.probabilities
 
+    def get_separate_statistics(self):
+
+        return self.separate_statistics
+
     def toString(self):
 
         print("Generamos ", self.n, " mensajes de cada longitud.")
@@ -68,13 +74,13 @@ class Bit_paridad_javi():
             list.append(random_bit)
         return list
 
-    #Generates messages groups. Each group has 'n' messages with a linear spaced length based on start and finish
+    #Generates messages groups. Each group has 'n' messages with a linear spaced length based on start and finish inputs
     def generate_messages_from_to(self):
 
         messages_rep = []
         #Cambiar variable de control
-        step = (len(range(self.start, self.finish)) * self.n ) // 20
-        for i in range(self.start, self.finish, step):
+        self.step = (len(range(self.start, self.finish)) * self.n ) // 20 #This parameter controls the number of groups
+        for i in range(self.start, self.finish, self.step):
             for j in range(0, self.n):
                 messages_rep.append(self.generate_bit_message(i))
         return messages_rep
@@ -149,47 +155,44 @@ class Bit_paridad_javi():
 
         return return_list
 
-    #Testing
-    def midle_test(self):
-        bitp = Bit_paridad_javi(10, 10000, 5, 0.001)
-        print("\n")
-        print("Mensajes originales")
-        # print(bitp.get_messages_raw())
-        print("\n")
-        print("Mensajes con bit de paridad añadido")
-        # print(bitp.get_messages_parity())
-        print("\n")
-        print("Mensajes alterados")
-        # print(bitp.get_messages_parity_alterated())
-        print("\n")
-        print("Numero de mensajes alterados {}".format(len(bitp.get_messages_parity_alterated())))
-        # print("Mensajes totales generados {}".format(bitp.get_total_messages()))
-        print("Mensajes alterados: {}".format(bitp.get_probabilities()[0]))
-        print("Mensajes alterados y detectaados {}".format(bitp.get_probabilities()[1]))
-        print("Mensajes alterados y  no detectados {}".format(bitp.get_probabilities()[2]))
-        # print( (len(range(bitp.get_start(), bitp.get_finish())) * bitp.get_n()) // 6)
-        print("Numero de mensajes generados {}".format(len(bitp.get_messages_parity_alterated())))
-        print(bitp.calculate_probabilities())
-        print(bitp.calculate_separate_probabilities())
-
     #Testing graphs
-    def test_plot_results(self):
-        n_groups = 10
-        scores1 = ()
-        scores2 = ()
+    def test_barchart_results(self):
+
+        n_groups = len(self.separate_statistics)
+
+        #Genera cada eje del barchart
+        x1_altered_messages= []
+        for probs in self.separate_statistics:
+            x1_altered_messages.append(probs[0])
+
+        x2_altered_and_detected_messages= []
+        for probs2 in self.separate_statistics:
+            x2_altered_and_detected_messages.append(probs[1])
 
         # create plot
         fig, ax = plt.subplots()
-        index = np.arange(n_groups)
-        bar_width = 0.35
+        index = [11,12,13,14,15]
+        prev_length = -1
+        length = -1
+
+        #for message in self.messages_parity_alterated:
+
+         #   length = len(message)
+         #   if prev_length != length:
+         #       index.append(len(message))
+        #       prev_length = len(message)
+        #  else:
+         #       continue
+
+        bar_width = 0.25
         opacity = 0.8
 
-        rects1 = plt.bar(index, scores1, bar_width,
+        rects1 = plt.bar(index, x1_altered_messages, bar_width,
                          alpha=opacity,
                          color='b',
                          label='alterados y no detectados')
 
-        rects2 = plt.bar(index + bar_width, scores2, bar_width,
+        rects2 = plt.bar(index + bar_width, x2_altered_and_detected_messages, bar_width,
                          alpha=opacity,
                          color='r',
                          label='alterados y detectados')
@@ -203,7 +206,39 @@ class Bit_paridad_javi():
         plt.tight_layout()
         plt.show()
 
+    def test_histogram_plot(self):
+        values = [10,20.30,40,50,60]
+        plt.hist(values, bins=[1,2,3,4,5,6], rwidth = 0.5, color = 'r')
 
 
+# Testing
 
+bitp = Bit_paridad_javi(10, 20, 2, 0.5)
+print("\n")
+print("Mensajes originales")
+# print(bitp.get_messages_raw())
+print("\n")
+print("Mensajes con bit de paridad añadido")
+# print(bitp.get_messages_parity())
+print("\n")
+print("Mensajes alterados")
+#print(bitp.get_messages_parity_alterated())
+print("\n")
+print("Numero de mensajes alterados {}".format(len(bitp.get_messages_parity_alterated())))
+print("Mensajes totales generados {}".format(bitp.get_total_messages()))
+print("Mensajes alterados: {}".format(bitp.get_probabilities()[0]))
+print("Mensajes alterados y detectaados {}".format(bitp.get_probabilities()[1]))
+print("Mensajes alterados y  no detectados {}".format(bitp.get_probabilities()[2]))
+print( (len(range(bitp.get_start(), bitp.get_finish())) * bitp.get_n()) // 6)
+print("Numero de mensajes generados {}".format(len(bitp.get_messages_parity_alterated())))
+print(bitp.calculate_statistics())
+print(bitp.calculate_separate_statistics())
 
+#for message in bitp.get_messages_parity_alterated():
+    #print(len(message))
+
+print("Longitud de todos los mensajes")
+for message in bitp.get_messages_parity_alterated():
+    print(len(message))
+
+bitp.test_histogram_plot()
