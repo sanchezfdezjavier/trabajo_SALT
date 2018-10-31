@@ -74,11 +74,11 @@ def son_listas_iguales(lista_a, lista_b):
     return True
 
 def Hamming(k, p, iter):
-    iter= 10**3
+
     contador_mensajes_alterados = 0
     contador_mensajes_alterados_y_corregidos_bien = 0
 
-    for _ in range(iter):
+    for i in range(iter):
         # Generar el mensaje que se emite:
         mensaje_original = generar_mensaje(k)
         insertar_bits_de_paridad(mensaje_original, k)
@@ -98,7 +98,7 @@ def Hamming(k, p, iter):
     contador_mensajes_alterados_y_corregidos_mal = contador_mensajes_alterados - contador_mensajes_alterados_y_corregidos_bien     
     return contador_mensajes_alterados/iter, contador_mensajes_alterados_y_corregidos_bien/iter, contador_mensajes_alterados_y_corregidos_mal/iter
 
-def simulacion_antigua():
+def simulacion_antigua(iter):
     print('                                       %               %               %')
     print('                                mensajes        mensajes        mensajes')
     print('                                alterado        alterado        alterado')
@@ -107,6 +107,8 @@ def simulacion_antigua():
     for k in [3, 4, 5]:
         n = 2**k - 1 - k
         for p in [0.1, 0.01, 0.001]:
-            (p_alterado, p_alterado_y_corregido, p_alterado_y_no_corregido) = Hamming(k, p)
+            (p_alterado, p_alterado_y_corregido, p_alterado_y_no_corregido) = Hamming(k, p, iter)
             print (repr(n).rjust(4) + " + " + repr(k), "{:15.4f}".format(float(p)),  "{:15.4f}".format(float(p_alterado)),  "{:15.4f}".format(float(p_alterado_y_corregido)),  "{:15.4f}".format(float(p_alterado_y_no_corregido)))
-    
+
+
+simulacion_antigua(10000)
