@@ -140,13 +140,13 @@ def test_barchart():
 
     n_groups = len(get_parameters_plot()[1])
 
-    means_men = get_parameters_plot()[1]
+    alterado = get_parameters_plot()[1]
 
 
-    means_women = get_parameters_plot()[2]
+    alterado_y_corregido = get_parameters_plot()[2]
 
 
-    other_values = get_parameters_plot()[3]
+    alterado_y_no_corregido = get_parameters_plot()[3]
 
 
     fig, ax = plt.subplots()
@@ -157,16 +157,16 @@ def test_barchart():
     opacity = 0.8
     error_config = {'ecolor': '0.3'}
 
-    rects1 = ax.bar(index, means_men, bar_width,
+    rects1 = ax.bar(index, alterado, bar_width,
                     alpha=opacity, color='b',
                     error_kw=error_config,
                     label='alterado')
 
-    rects2 = ax.bar(index + bar_width, means_women, bar_width,
+    rects2 = ax.bar(index + bar_width, alterado_y_corregido, bar_width,
                     alpha=opacity, color='r',
                     error_kw=error_config,
                     label='alterado y corregido')
-    rects3 = ax.bar(index + bar_width + bar_width, other_values, bar_width,
+    rects3 = ax.bar(index + bar_width + bar_width, alterado_y_no_corregido, bar_width,
                     alpha=opacity, color = 'g',
                     error_kw=error_config,
                     label= 'alterado y no corregido')
