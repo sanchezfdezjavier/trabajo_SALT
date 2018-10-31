@@ -46,8 +46,8 @@ def probabilidad_empirica_correcto(n, p, iter):
     return contador_mensajes_iguales/iter
 
 """ -----------------------------------------------------------------
-> probabilidad_teorica_correcto(100, 0.01, 1)
-
+> probabilidad_teorica_correcto(100, 0.01)
+> probabilidad_empirica_correcto(100, 0.01, 1)
 > probabilidad_empirica_correcto(100, 0.01, 10)
 > probabilidad_empirica_correcto(100, 0.01, 1000)
 > probabilidad_empirica_correcto(100, 0.01, 10000)
