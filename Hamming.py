@@ -1,5 +1,11 @@
 import random
 import copy
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
+from collections import namedtuple
+
+
 
 def generar_mensaje(k): 
     # Dev. un mensaje de datos (0s y 1s) de la longitud máxima que se puede
@@ -109,6 +115,9 @@ def simulacion(iter):
         for p in [0.1, 0.01, 0.001]:
             (p_alterado, p_alterado_y_corregido, p_alterado_y_no_corregido) = Hamming(k, p, iter)
             print (repr(n).rjust(4) + " + " + repr(k), "{:15.4f}".format(float(p)),  "{:15.4f}".format(float(p_alterado)),  "{:15.4f}".format(float(p_alterado_y_corregido)),  "{:15.4f}".format(float(p_alterado_y_no_corregido)))
+
+def test_barchart():
+    pass
 
 
 simulacion(1000)
