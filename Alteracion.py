@@ -26,7 +26,7 @@ def alterar_lista_de_bits(lista, p):
             lista[i] = 1 - lista[i]
 
 def probabilidad_empirica_correcto(n, p, iter):
-    iter = 10**3
+
     contador_mensajes_iguales = 0
     for i in range(iter):
         # Generar el mensaje que se emite:
@@ -46,10 +46,10 @@ def probabilidad_empirica_correcto(n, p, iter):
     return contador_mensajes_iguales/iter
 
 """ -----------------------------------------------------------------
-> probabilidad_teorica_correcto(100, 0.01)
+> probabilidad_teorica_correcto(100, 0.01, 1)
 
-> probabilidad_empirica_correcto(100, 0.01)
-> probabilidad_empirica_correcto(100, 0.01)
-> probabilidad_empirica_correcto(100, 0.01)
+> probabilidad_empirica_correcto(100, 0.01, 10)
+> probabilidad_empirica_correcto(100, 0.01, 1000)
+> probabilidad_empirica_correcto(100, 0.01, 10000)
 
 ----------------------------------------------------------------- """
