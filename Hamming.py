@@ -98,17 +98,17 @@ def Hamming(k, p, iter):
     contador_mensajes_alterados_y_corregidos_mal = contador_mensajes_alterados - contador_mensajes_alterados_y_corregidos_bien     
     return contador_mensajes_alterados/iter, contador_mensajes_alterados_y_corregidos_bien/iter, contador_mensajes_alterados_y_corregidos_mal/iter
 
-def simulacion_antigua(iter):
+def simulacion(iter):
     print('                                       %               %               %')
     print('                                mensajes        mensajes        mensajes')
     print('                                alterado        alterado        alterado')
     print('   n + k               p                     y corregido  y no corregido')
     print(' --------         ------       ---------    ------------  --------------')
-    for k in [3, 4, 5]:
+    for k in [3, 4, 5, 6, 7, 8, 9]:
         n = 2**k - 1 - k
         for p in [0.1, 0.01, 0.001]:
             (p_alterado, p_alterado_y_corregido, p_alterado_y_no_corregido) = Hamming(k, p, iter)
             print (repr(n).rjust(4) + " + " + repr(k), "{:15.4f}".format(float(p)),  "{:15.4f}".format(float(p_alterado)),  "{:15.4f}".format(float(p_alterado_y_corregido)),  "{:15.4f}".format(float(p_alterado_y_no_corregido)))
 
 
-simulacion_antigua(10000)
+simulacion(1000)
